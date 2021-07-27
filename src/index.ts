@@ -38,10 +38,30 @@ app.get('/school/:schoolId/vendingMachines', async (req, res) => {
       temperatures: true,
       humidities: true,
       accelerometers: true,
+      products: true
     }
   })
 
   return res.json(machines);
+})
+
+app.get('/vendingMachine/:id', async (req, res) => {
+  const machine = await prisma.vendingMachine.findUnique({
+    where: {
+      id: +req.params.id
+    },
+    include: {
+      products: true,
+    }
+  })
+
+  return res.json(machine);
+})
+
+app.get('/products/categories', async(req, res) => {
+  const categories = await prisma.category.findMany();
+
+  return res.json(categories);
 })
 
 app.get('/alerts', async (req, res) => {

@@ -29,6 +29,22 @@ model VendingMachine {
   temperatures Temperature[]
   accelerometers Accelerometer[]
   humidities Humidity[]
+  products Product[]
+}
+
+model Product {
+  id Int @default(autoincrement()) @id
+  name String
+  imgName String
+  category Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  vendingMachines VendingMachine[]
+}
+
+model Category {
+  id Int @default(autoincrement()) @id
+  name String
+  products Product[]
 }
 
 model Temperature {
