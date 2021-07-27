@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 import { PrismaClient } from '@prisma/client';
 require('dotenv').config();
 
@@ -7,6 +8,7 @@ const prisma = new PrismaClient();
 const app = express();
 
 app.use(cors());
+app.use(bodyParser.json())
 
 app.get('/schools', async (req, res) => {
   const schools = await prisma.school.findMany({
@@ -117,6 +119,19 @@ app.get('/alerts', async (req, res) => {
   });
 
   return res.json(alerts);
+})
+
+app.post('/vendingMachine/:id/status', async (req, res) => {
+  const vendingMachine = await prisma.vendingMachine.update({
+    where: {
+      id: +req.params.id
+    },
+    data: {
+      status: req.body.status,
+    }
+  })
+
+  return res.json(vendingMachine);
 })
 
 app.listen(process.env.API_PORT || 8000);
