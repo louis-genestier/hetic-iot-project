@@ -1,9 +1,12 @@
 const express = require('express');
+const cors = require('cors');
 import { PrismaClient } from '@prisma/client';
 require('dotenv').config();
 
 const prisma = new PrismaClient();
 const app = express();
+
+app.use(cors());
 
 app.get('/schools', async (req, res) => {
   const schools = await prisma.school.findMany({
