@@ -30,6 +30,7 @@ model VendingMachine {
   accelerometers Accelerometer[]
   humidities Humidity[]
   products Product[]
+  status String?
 }
 
 model Product {

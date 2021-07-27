@@ -48,6 +48,30 @@ app.get('/school/:schoolId/vendingMachines', async (req, res) => {
   return res.json(machines);
 })
 
+app.get('/school/:schoolId/vendingMachines/search/:query', async (req, res) => {
+  const products = await prisma.product.findMany({
+    where: {
+      AND: [
+        {
+          vendingMachines: {
+            some: {
+              schoolId: +req.params.schoolId
+            }
+          }
+        },
+        {
+          name: {
+            contains: req.params.query
+          }
+        }
+      ]
+
+    }
+  })
+
+  return res.json(products);
+})
+
 app.get('/vendingMachine/:id', async (req, res) => {
   const machine = await prisma.vendingMachine.findUnique({
     where: {
@@ -59,6 +83,24 @@ app.get('/vendingMachine/:id', async (req, res) => {
   })
 
   return res.json(machine);
+})
+
+app.get('/schools/search/:query', async (req, res) => {
+  const schools = await prisma.school.findMany({
+    where: {
+      OR: [{
+        city: {
+          contains: req.params.query
+        },
+      }, {
+        name: {
+          contains: req.params.query,
+        }
+      }]
+    }
+  });
+
+  return res.json(schools);
 })
 
 app.get('/products/categories', async(req, res) => {
