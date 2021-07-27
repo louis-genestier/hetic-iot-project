@@ -1,0 +1,28 @@
+{
+  "name": "projet-hetic-iot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon",
+    "build": "rimraf ./build && tsc",
+    "start": "yarn build && node build/index.js"
+  },
+  "dependencies": {
+    "@influxdata/influxdb-client": "^1.15.0",
+    "@influxdata/influxdb-client-apis": "^1.15.0",
+    "@prisma/client": "2.27.0",
+    "@types/node": "^16.4.1",
+    "@typescript-eslint/eslint-plugin": "^4.28.4",
+    "@typescript-eslint/parser": "^4.28.4",
+    "dotenv": "^10.0.0",
+    "eslint": "^7.31.0",
+    "express": "^4.17.1",
+    "mysql2": "^2.2.5",
+    "nodemon": "^2.0.12",
+    "prisma": "2.27.0",
+    "reflect-metadata": "^0.1.13",
+    "ts-node": "^10.1.0",
+    "typescript": "^4.3.5"
+  }
+}

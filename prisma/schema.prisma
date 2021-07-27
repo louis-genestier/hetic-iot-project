@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model School {
+  id Int @default(autoincrement()) @id
+  name String
+  address String
+  city String
+  zipCode Int
+  vendingMachines VendingMachine[]
+  alerts Alert[]
+}
+
+model VendingMachine {
+  id Int @default(autoincrement()) @id
+  nodeName String @unique
+  school School @relation(fields: [schoolId], references: [id])
+  schoolId Int
+  alerts Alert[]
+  temperatures Temperature[]
+  accelerometers Accelerometer[]
+  humidities Humidity[]
+}
+
+model Temperature {
+  id Int @default(autoincrement()) @id
+  temperature Float
+  createdAt DateTime @default(now())
+  vendingMachine VendingMachine @relation(fields: [vendingMachineId], references: [id])
+  vendingMachineId Int
+  alert Alert?
+}
+
+model Accelerometer {
+  id Int @default(autoincrement()) @id
+  value Int
+  createdAt DateTime @default(now())
+  vendingMachine VendingMachine @relation(fields: [vendingMachineId], references: [id])
+  vendingMachineId Int
+  alert Alert?
+}
+
+model Humidity {
+  id Int @default(autoincrement()) @id
+  value Float
+  createdAt DateTime @default(now())
+  vendingMachine VendingMachine @relation(fields: [vendingMachineId], references: [id])
+  vendingMachineId Int
+  alert Alert?
+}
+
+model Alert {
+  id Int @default(autoincrement()) @id
+  temperature Temperature? @relation(fields: [temperatureId], references: [id])
+  temperatureId Int?
+  accelerometer Accelerometer? @relation(fields: [accelerometerId], references: [id])
+  accelerometerId Int?
+  humidity Humidity? @relation(fields: [humidityId], references: [id])
+  humidityId Int?
+  createdAt DateTime @default(now())
+  vendingMachine VendingMachine @relation(fields: [vendingMachineId], references: [id])
+  vendingMachineId Int
+  school School @relation(fields: [schoolId], references: [id])
+  schoolId Int
+  message String
+  isHandled Boolean @default(false)
+  type String
+}
