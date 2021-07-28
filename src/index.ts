@@ -82,6 +82,7 @@ app.get('/vendingMachine/:id', async (req, res) => {
     include: {
       products: true,
       alerts: true,
+      temperatures: true,
     }
   })
 
