@@ -81,6 +81,7 @@ app.get('/vendingMachine/:id', async (req, res) => {
     },
     include: {
       products: true,
+      alerts: true,
     }
   })
 
@@ -132,6 +133,19 @@ app.post('/vendingMachine/:id/status', async (req, res) => {
   })
 
   return res.json(vendingMachine);
+})
+
+app.post('/alert/:id/handle', async (req, res) => {
+  const alert = await prisma.alert.update({
+    where: {
+      id: +req.params.id
+    },
+    data: {
+      isHandled: true
+    }
+  })
+
+  return res.json(alert);
 })
 
 app.listen(process.env.API_PORT || 8000);
